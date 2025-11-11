@@ -1,14 +1,12 @@
----
-
 # 1. Descripción General del Proyecto
 
-**Nombre del Sistema:**
+**Nombre del Sistema:**  
 **Grupo Alimentos Perú S.A.C. – Sistema Centralizado de Gestión de Tiendas**
 
-**Tipo de Sistema:**
+**Tipo de Sistema:**  
 ERP liviano (Enterprise Resource Planning simplificado)
 
-**Descripción Breve:**
+**Descripción Breve:**  
 El sistema está orientado a gestionar de manera centralizada las operaciones de una cadena de minimarkets ubicados en Chosica y Chaclacayo, con el objetivo de controlar productos, ventas y usuarios según su rol dentro de la organización.
 
 ---
