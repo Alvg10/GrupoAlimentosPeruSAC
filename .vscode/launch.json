@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GrupoAlimentosApplication<ArtefacccGAP>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.grupo.alimentos.peru.GrupoAlimentosApplication",
+            "projectName": "ArtefacccGAP",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
