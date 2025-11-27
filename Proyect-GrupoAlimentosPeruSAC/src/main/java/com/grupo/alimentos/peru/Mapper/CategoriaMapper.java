@@ -10,16 +10,23 @@ import com.grupo.alimentos.peru.Entities.Categoria;
 @Component
 public class CategoriaMapper {
     
-
     private final ModelMapper modelMapper;
     public CategoriaMapper(ModelMapper modelMapper){
-        this.modelMapper = modelMapper;
+        this.modelMapper = modelMapper; //Inyection por constructor
     }
-    public CategoriaResponseDTO toResponseDTO(Categoria categoria){
+
+
+
+
+    public CategoriaResponseDTO toDTO(Categoria categoria){
         return modelMapper.map(categoria, CategoriaResponseDTO.class);
     }
 
-    public Categoria toRequestDTO(CategoriaRequestDTO categoriaRequest){
+
+
+
+
+    public Categoria toEntity(CategoriaRequestDTO categoriaRequest){
         return modelMapper.map(categoriaRequest, Categoria.class);
     }
 
