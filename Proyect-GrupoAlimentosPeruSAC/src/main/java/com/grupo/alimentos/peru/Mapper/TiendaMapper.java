@@ -10,16 +10,23 @@ import com.grupo.alimentos.peru.Entities.Tienda;
 
 @Component
 public class TiendaMapper {
-    
     private final ModelMapper modelMapper;
     public TiendaMapper(ModelMapper modelMapper){
         this.modelMapper = modelMapper;
     }
-    public TiendaResponseDTO toResponseDTO(Tienda entity){
+
+
+
+
+    public TiendaResponseDTO toDTO(Tienda entity){
         return modelMapper.map(entity, TiendaResponseDTO.class);
     }
-    public Tienda toRequestEntity(TiendaRequestDTO dto){
+
+
+    public Tienda toEntity(TiendaRequestDTO dto){
         return modelMapper.map(dto, Tienda.class);
+
+
     }
 }
 

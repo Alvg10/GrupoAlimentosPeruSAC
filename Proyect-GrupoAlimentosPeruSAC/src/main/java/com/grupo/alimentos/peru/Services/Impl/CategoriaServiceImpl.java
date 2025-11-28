@@ -1,9 +1,7 @@
 package com.grupo.alimentos.peru.Services.Impl;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import com.grupo.alimentos.peru.DTOs.CategoriaRequestDTO;
 import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
 import com.grupo.alimentos.peru.Entities.Categoria;
@@ -31,8 +29,6 @@ public class CategoriaServiceImpl implements CategoriaService {
         return categoriaMapper.toDTO(categoria); */
         return categoriaMapper.toDTO(categoriaRepository.save(categoriaMapper.toEntity(categoriaRequestDto)));  
     }
-
-
     @Override
     public List<CategoriaResponseDTO> listarCategoria() {
         List<Categoria> listaCategoria = categoriaRepository.findAll();
@@ -41,7 +37,6 @@ public class CategoriaServiceImpl implements CategoriaService {
                 .map(categoriaMapper::toDTO)
                 .collect(Collectors.toList());
     }    
-    
     
     @Override
     public CategoriaResponseDTO obtenerCategoriaPorID(Long idcateg) {
@@ -54,11 +49,6 @@ public class CategoriaServiceImpl implements CategoriaService {
             return categoriaMapper.toDTO(categoria);
     }
 
-
-    //           nombreCategoria
-    //           descripcionCategoria
-
-
     @Override
     public CategoriaResponseDTO actualizarCategoria(Long idCategoriaActualiza, CategoriaRequestDTO categoriaDTO) {
         
@@ -69,9 +59,6 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria nombreCategoria = categoriaRepository.save(categoriaExsitente);
         return categoriaMapper.toDTO(nombreCategoria);
     }   
-
-
-
     @Override
     public void eliminarCategoria(Long idCategoria) {
        Optional<Categoria> categoria = categoriaRepository.findById(idCategoria);
@@ -79,6 +66,13 @@ public class CategoriaServiceImpl implements CategoriaService {
         throw new ResourceNotFoundException("Categoria no encontrada");  
        }
        categoriaRepository.deleteById(idCategoria);
+    }
+    @Override
+    public CategoriaResponseDTO obtenerCategoriaPorNombre(String nombreCategoria) {
+        Categoria nombreExsitente = categoriaRepository.findByNombreCategoriaIgnoreCase(nombreCategoria)
+            .orElseThrow(() ->  new ResourceNotFoundException("No se encontro el nombre lamentablemente"));
+            return categoriaMapper.toDTO(nombreExsitente);
+
     }    
 
 }

@@ -1,11 +1,7 @@
 package com.grupo.alimentos.peru.Services;
 import java.util.List;
-import java.util.Optional;
-
 import com.grupo.alimentos.peru.DTOs.CategoriaRequestDTO;
 import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
-import com.grupo.alimentos.peru.Exceptions.AlreadyExistsException;
-
 public interface CategoriaService {
     
 
@@ -14,6 +10,8 @@ public interface CategoriaService {
         List<CategoriaResponseDTO> listarCategoria();
 
         CategoriaResponseDTO obtenerCategoriaPorID (Long idcateg);
+        
+        CategoriaResponseDTO obtenerCategoriaPorNombre (String nombreCategoria);
 
         CategoriaResponseDTO actualizarCategoria (Long idCategoriaActualiza, CategoriaRequestDTO categoriaDTO);
         
