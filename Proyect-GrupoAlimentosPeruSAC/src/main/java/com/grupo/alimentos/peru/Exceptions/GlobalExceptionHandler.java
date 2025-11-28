@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
 
 
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)                //ya existe en Spring
     public ResponseEntity<ExceptionResponse> handleValidationsExceptions(MethodArgumentNotValidException e, HttpServletRequest request){
         
         Map<String,String> errors = new HashMap<>();

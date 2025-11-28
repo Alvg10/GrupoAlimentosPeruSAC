@@ -11,7 +11,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByTienda_IdTienda(Long idTienda);
     List<Producto> findByCategoria_IdCategoria(Long idCategoria);
 	boolean existsByNombreProductoIgnoreCaseAndTienda_IdTienda(String nombreProducto, Long idTienda);
-	
+	List<Producto> findByNombreProductoContainingIgnoreCase(String nombreProducto);  // Search Bar
 }
 
 

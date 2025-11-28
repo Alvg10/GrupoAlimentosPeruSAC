@@ -70,7 +70,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public CategoriaResponseDTO obtenerCategoriaPorNombre(String nombreCategoria) {
         Categoria nombreExsitente = categoriaRepository.findByNombreCategoriaIgnoreCase(nombreCategoria)
-            .orElseThrow(() ->  new ResourceNotFoundException("No se encontro el nombre lamentablemente"));
+            .orElseThrow(() ->  new c("No se encontro el nombre lamentablemente"));
             return categoriaMapper.toDTO(nombreExsitente);
 
     }    
