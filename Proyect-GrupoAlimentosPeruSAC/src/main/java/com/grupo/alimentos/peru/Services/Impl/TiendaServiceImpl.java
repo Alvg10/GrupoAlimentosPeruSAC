@@ -1,6 +1,9 @@
 package com.grupo.alimentos.peru.Services.Impl;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.grupo.alimentos.peru.DTOs.TiendaRequestDTO;
 import com.grupo.alimentos.peru.DTOs.TiendaResponseDTO;
 import com.grupo.alimentos.peru.Entities.Tienda;
@@ -12,6 +15,7 @@ import com.grupo.alimentos.peru.Services.TiendaService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Service
 public class TiendaServiceImpl implements TiendaService {
     
 

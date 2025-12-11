@@ -15,4 +15,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 }
 
 
-    
+/*
+
+public interface CrudRepository<T, ID> extends Repository<T, ID> {
+
+   Optional<T> findById(ID id);   <<<< Siempre devuelvo un Optional
+}
+*/    

@@ -2,6 +2,9 @@ package com.grupo.alimentos.peru.Services.Impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.grupo.alimentos.peru.DTOs.CategoriaRequestDTO;
 import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
 import com.grupo.alimentos.peru.Entities.Categoria;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
+@Service
 public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaMapper categoriaMapper;
     private final CategoriaRepository categoriaRepository;
@@ -55,7 +59,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria categoriaExsitente = categoriaRepository.findById(idCategoriaActualiza)
             .orElseThrow(() ->  new ResourceNotFoundException("No se encontro la categoria lamentablemente"));        
         categoriaExsitente.setNombreCategoria(categoriaDTO.getNombreCategoria());
-        categoriaExsitente.setNombreCategoria(categoriaDTO.getDescripcionCategoria());
+        categoriaExsitente.setDescripcionCategoria(categoriaDTO.getDescripcionCategoria());
         Categoria nombreCategoria = categoriaRepository.save(categoriaExsitente);
         return categoriaMapper.toDTO(nombreCategoria);
     }   
@@ -70,7 +74,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public CategoriaResponseDTO obtenerCategoriaPorNombre(String nombreCategoria) {
         Categoria nombreExsitente = categoriaRepository.findByNombreCategoriaIgnoreCase(nombreCategoria)
-            .orElseThrow(() ->  new c("No se encontro el nombre lamentablemente"));
+            .orElseThrow(() ->  new ResourceNotFoundException("No se encontro el nombre lamentablemente"));
             return categoriaMapper.toDTO(nombreExsitente);
 
     }    

@@ -1,0 +1,57 @@
+[33mcommit a53a5b5a871c3f1e421065191b4c092aa122055b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: dev.ega <114100372+Alvg10@users.noreply.github.com>
+Date:   Fri Nov 28 18:32:01 2025 -0500
+
+    Feat: Interfaz ProductoService
+
+[33mcommit 2048137c6ebcc74f296f8a8dd374086460ca638f[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: dev.ega <114100372+Alvg10@users.noreply.github.com>
+Date:   Fri Nov 28 13:04:28 2025 -0500
+
+    feat: construccion de la capa TiendaServiceImpl
+
+[33mcommit 561ed89348b6b90681bcb38a1e04fa662abc253c[m
+Merge: a1bf409 1ad938b
+Author: dev.ega <114100372+Alvg10@users.noreply.github.com>
+Date:   Thu Nov 27 18:56:54 2025 -0500
+
+    Merge branch 'main' of https://github.com/Alvg10/GrupoAlimentosPeruSAC
+
+[33mcommit a1bf4090d2e555109184497e21a97d3eb259ae93[m
+Author: dev.ega <114100372+Alvg10@users.noreply.github.com>
+Date:   Thu Nov 27 18:47:14 2025 -0500
+
+    feat: construccion de la capa CategoriaServiceImpl
+
+[33mcommit 1ad938bc37cf855196e7954f075518d6d8789191[m
+Merge: 5f8f52d aa0cc67
+Author: Dev.Eg4 ＜（＾－＾）＞ <114100372+Alvg10@users.noreply.github.com>
+Date:   Wed Nov 26 10:32:35 2025 -0500
+
+    Merge branch 'main' of https://github.com/Alvg10/GrupoAlimentosPeruSAC
+
+[33mcommit aa0cc670fb02f39948e8bf5bd251109f4c1c7558[m
+Author: Dev.Eg4 ＜（＾－＾）＞ <114100372+Alvg10@users.noreply.github.com>
+Date:   Wed Nov 26 10:31:38 2025 -0500
+
+    Create technical report for ERP system
+    
+    Added a comprehensive technical report for the ERP system, detailing objectives, roles, technologies, and database design.
+
+[33mcommit b3c1bef3cc616e8322a3eaf48b78bcca0a5780b7[m
+Author: dev.ega <114100372+Alvg10@users.noreply.github.com>
+Date:   Wed Nov 26 10:18:20 2025 -0500
+
+    Second up
+
+[33mcommit 5f8f52dcb226935c642159572bfdc2227da6632c[m
+Author: Dev.Eg4 ＜（＾－＾）＞ <114100372+Alvg10@users.noreply.github.com>
+Date:   Tue Nov 18 12:30:41 2025 -0500
+
+    Create README.md
+
+[33mcommit 4732aba62bbc763498b6e2fb0e4e06510a199e0f[m
+Author: dev.ega <114100372+Alvg10@users.noreply.github.com>
+Date:   Tue Nov 18 12:22:21 2025 -0500
+
+    First

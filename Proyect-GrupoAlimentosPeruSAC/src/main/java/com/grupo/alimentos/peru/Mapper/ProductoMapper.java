@@ -8,19 +8,27 @@ import com.grupo.alimentos.peru.DTOs.ProductoResponseDTO;
 import com.grupo.alimentos.peru.Entities.Producto;
 
 @Component
-public class ProductoMapper {
-    
+public class ProductoMapper {  
 
     private final ModelMapper modelmapper;
-
     public ProductoMapper(ModelMapper modelmapper){
         this.modelmapper = modelmapper;
     }
-    public ProductoResponseDTO toResponseDTO(Producto product){
+
+
+
+    public ProductoResponseDTO toDTO(Producto product){
         return modelmapper.map(product, ProductoResponseDTO.class);
     }
-    public Producto toRequestDTO ( ProductoRequestDTO productoRequest){
+
+
+
+
+    public Producto toEntity ( ProductoRequestDTO productoRequest){
         return modelmapper.map(productoRequest, Producto.class);
     }
+
+
+
 
 }

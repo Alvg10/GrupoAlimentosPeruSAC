@@ -11,10 +11,11 @@ public interface ProductoService {
  List<ProductoResponseDTO> listarProductos();
  List<ProductoResponseDTO> listarProductoPorCategoria(Long idCategoria);
  List<ProductoResponseDTO> listarProductosPorTienda(Long idTienda);
- ProductoResponseDTO actualizarProducto (Long idProducto, ProductoRequestDTO ProductoDTO);
+ ProductoResponseDTO actualizarProducto (Long idProducto, ProductoRequestDTO actualizarProducto);
  void eliminarProducto (Long idProducto);
- ProductoResponseDTO aumentarStock(Long idProducto, int cantidad);
- ProductoResponseDTO disminuirStock(Long idProducto, int cantidad);
+ ProductoResponseDTO registrarEntrada(Long idProducto, int cantidad);
+ ProductoResponseDTO registrarSalida(Long idProducto, int cantidad);
+ List<ProductoResponseDTO> buscarProductoPorCoincidencia(String nombreProducto);
 
 
 }
