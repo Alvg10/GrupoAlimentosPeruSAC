@@ -1,4 +1,5 @@
 package com.grupo.alimentos.peru.Services.Impl;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,9 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoResponseDTO crearProducto(ProductoRequestDTO nuevoProducto) {
         Tienda tienda = tiendaRepository.findById(nuevoProducto.getIdTienda())
-        .orElseThrow(() -> new ResourceNotFoundException("La tienda no existe"));
-    
+        .orElseThrow(() -> new ResourceNotFoundException("La tienda no existe"));    
         Categoria categoria = categoriaRepository.findById(nuevoProducto.getIdCategoria())
         .orElseThrow(()-> new ResourceNotFoundException("No existe esta categoria"));
-
         if(productoRepository.existsByNombreProductoIgnoreCaseAndTienda_IdTienda(nuevoProducto.getNombreProducto(),nuevoProducto.getIdTienda()))
         {
             throw new BusinessRuleException("Ya existe este producto mano");
@@ -45,9 +44,8 @@ public class ProductoServiceImpl implements ProductoService{
         producto.setCategoria(categoria);
         producto.setTienda(tienda);
         return productoMapper.toDTO(productoRepository.save(producto));
-
-
     }
+    
     @Override
     @Transactional(readOnly = true)
     public ProductoResponseDTO obtenerProductosPorID(Long idProducto) {
@@ -89,7 +87,7 @@ public class ProductoServiceImpl implements ProductoService{
         Producto productoStock = productoRepository.findById(idProducto)
             .orElseThrow(()-> new ResourceNotFoundException("No existe el producto"));
         if(productoStock.getStock() > 0 ){
-            throw new BusinessRuleException("Existe " + productoStock.getStock() + " productos en stock: No se puede eliminar");
+            throw new BusinessRuleException("Existen " + productoStock.getStock() + " productos en stock: No se puede eliminar");
         }
         productoRepository.delete(productoStock);
 
@@ -112,7 +110,6 @@ public class ProductoServiceImpl implements ProductoService{
         .orElseThrow(()->new ResourceNotFoundException("No existe la Tienda"));
         Categoria categoria = categoriaRepository.findById(actualizarProducto.getIdCategoria())
         .orElseThrow(()->new ResourceNotFoundException("No existe la categoria"));
-
         boolean duplicado = productoRepository.existsByNombreProductoIgnoreCaseAndTienda_IdTienda
         (actualizarProducto.getNombreProducto(), actualizarProducto.getIdTienda());
 
@@ -125,7 +122,6 @@ public class ProductoServiceImpl implements ProductoService{
         producto.setPrecioProducto(actualizarProducto.getPrecioProducto());
         producto.setCategoria(categoria);
         producto.setTienda(tienda);
-
         return productoMapper.toDTO(productoRepository.save(producto));     
     }
 
@@ -153,6 +149,25 @@ public class ProductoServiceImpl implements ProductoService{
        }
        producto.setStock(producto.getStock() - cantidad);
        return productoMapper.toDTO(productoRepository.save(producto));
+    }
+
+    @Override
+    public List<ProductoResponseDTO> crearProductos(List<ProductoRequestDTO> productosVarios) {
+        List<Producto> muchosProducts = new ArrayList<>();
+        for (ProductoRequestDTO productos : productosVarios){
+            Producto productoSnuevos = productoMapper.toEntity(productos);
+            Categoria categoria = categoriaRepository.findById(productos.getIdCategoria())
+                .orElseThrow(()-> new ResourceNotFoundException("No existe esa categoria para ese producto"));  
+            Tienda tienda = tiendaRepository.findById(productos.getIdTienda())
+                .orElseThrow(()-> new ResourceNotFoundException("No existe esa tienda para ese producto"));
+            productoSnuevos.setCategoria(categoria);
+            productoSnuevos.setTienda(tienda);
+            muchosProducts.add(productoSnuevos);
+        }
+        List<Producto> lote = productoRepository.saveAll(muchosProducts);
+        return lote.stream()
+                .map(productoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
    

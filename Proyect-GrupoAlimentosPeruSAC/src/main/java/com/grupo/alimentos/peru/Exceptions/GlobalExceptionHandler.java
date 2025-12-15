@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
             e.getMessage(),
             HttpStatus.NOT_FOUND.value(),
             LocalDateTime.now(),
-            "Sin detalles mas detalles",
+            "Parece que lo que estas buscando no existe",
             request.getRequestURI(),
             request.getMethod());
             return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);                        
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
             e.getMessage(),
             HttpStatus.CONFLICT.value(),
             LocalDateTime.now(),
-            "EL recurso ya exsite",
+            "No se puede crear porque el recurso ya está registrado",
             request.getRequestURI(),
             request.getMethod());
             return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
             e.getMessage(),
             HttpStatus.BAD_REQUEST.value(),
             LocalDateTime.now(),
-            "Sin detalles mas detalles",
+            "Los datos enviados son incorrectos",
             request.getRequestURI(),
             request.getMethod());
             return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
             e.getMessage(),
             HttpStatus.NOT_FOUND.value(),
             LocalDateTime.now(),
-            "Esto es un error de la regla del negocio",
+            "Parece que estas intentando hacer algo que van en contra de las reglas de negocio",
             request.getRequestURI(),
             request.getMethod());
             return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);                        

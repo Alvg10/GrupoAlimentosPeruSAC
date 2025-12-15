@@ -16,6 +16,7 @@ public interface ProductoService {
  void eliminarProducto (Long idProducto);
  ProductoResponseDTO registrarEntrada(Long idProducto, int cantidad);
  ProductoResponseDTO registrarSalida(Long idProducto, int cantidad);
+ List<ProductoResponseDTO> crearProductos (List<ProductoRequestDTO> productosVarias);
 
 
 }

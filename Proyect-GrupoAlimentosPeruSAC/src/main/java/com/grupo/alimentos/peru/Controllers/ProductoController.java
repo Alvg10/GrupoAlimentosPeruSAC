@@ -3,6 +3,7 @@ package com.grupo.alimentos.peru.Controllers;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,53 +40,56 @@ public class ProductoController {
         return ResponseEntity.created(ubicacion).body(nuevo);
     }
 
-    @GetMapping("/{idProducto}")
-    public ResponseEntity<ProductoResponseDTO> obtenerPorID(@PathVariable Long productoID){
-        return ResponseEntity.ok(productoService.obtenerProductosPorID(productoID));
+    @PostMapping("/porLote")
+    public ResponseEntity<List<ProductoResponseDTO>> crearProductoPorLote (@RequestBody List<ProductoRequestDTO> porLotes){
+        List<ProductoResponseDTO> productosXLote = productoService.crearProductos(porLotes);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productosXLote);
     }
 
-    @GetMapping("/listarProductos")
+    @GetMapping("/listarProducto/{idProducto}")
+    public ResponseEntity<ProductoResponseDTO> obtenerPorID(@PathVariable Long idProducto){
+        return ResponseEntity.ok(productoService.obtenerProductosPorID(idProducto));
+    }
+
+    @GetMapping()
     public ResponseEntity<List<ProductoResponseDTO>> listaTodo (){
         return ResponseEntity.ok(productoService.listarProductos());
     }
 
-    @GetMapping("/{idCategoria}")
-    public ResponseEntity<List<ProductoResponseDTO>> listarProductoPorCategoria(@PathVariable Long CategoriaID){
-        return ResponseEntity.ok(productoService.listarProductoPorCategoria(CategoriaID));
+    @GetMapping("/categoria/{idCategoria}")
+    public ResponseEntity<List<ProductoResponseDTO>> listarProductoPorCategoria(@PathVariable Long idCategoria){
+        return ResponseEntity.ok(productoService.listarProductoPorCategoria(idCategoria));
     }
 
 
-    @GetMapping("/{idTienda}")
-    public ResponseEntity<List<ProductoResponseDTO>> listarProductoPorTienda(@PathVariable Long tiendaID){
-        return ResponseEntity.ok(productoService.listarProductosPorTienda(tiendaID));
+    @GetMapping("/tienda/{idTienda}")
+    public ResponseEntity<List<ProductoResponseDTO>> listarProductoPorTienda(@PathVariable Long idTienda){
+        return ResponseEntity.ok(productoService.listarProductosPorTienda(idTienda));
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<ProductoResponseDTO>> buscarPorNombre(@RequestParam String nombre){
+    public ResponseEntity<List<ProductoResponseDTO>> buscarPorNombre(@RequestParam String nombre){      //  http://localhost:8080/api/producto/buscar?nombre=chicha
         return ResponseEntity.ok(productoService.buscarProductoPorCoincidencia(nombre));
     }
 
 
-    @PutMapping("/{idProducto}")
-    public ResponseEntity<ProductoResponseDTO>actualizarProducto(
-        @PathVariable Long IdProduct,
-        @Valid @RequestBody ProductoRequestDTO actualizarProduct){
+    @PutMapping("/{IdProduct}")
+    public ResponseEntity<ProductoResponseDTO>actualizarProducto(@PathVariable Long IdProduct,@Valid @RequestBody ProductoRequestDTO actualizarProduct){
         return ResponseEntity.ok(productoService.actualizarProducto(IdProduct, actualizarProduct));
-        }
+            }
 
-
-    @DeleteMapping("/{idProducto}")
+    @DeleteMapping("/{productoID}")
     public ResponseEntity<Void> eliminarProducto (@PathVariable Long productoID){
         productoService.eliminarProducto(productoID);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{idProducto}/entrada/{cantidad}")
+    @PostMapping("/{productoID}/entrada/{cantidad}")
     public ResponseEntity<ProductoResponseDTO> registrarEntrada(@PathVariable Long productoID, @PathVariable int cantidad){
         return ResponseEntity.ok(productoService.registrarEntrada(productoID, cantidad));
     }
 
-    @PostMapping("/{idProducto}/salida/{cantidad}")
+    @PostMapping("/{productoID}/salida/{cantidad}")
     public ResponseEntity<ProductoResponseDTO> registrarSalida(@PathVariable Long productoID, @PathVariable int cantidad){
         return ResponseEntity.ok(productoService.registrarSalida(productoID, cantidad));
     }

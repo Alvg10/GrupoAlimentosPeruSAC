@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 public class Categoria {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     @Column(name = "id_categoria", nullable = false)
     private Long idCategoria;
 
     @Column(name="nombre_categoria", nullable = false, length = 100)
     private String nombreCategoria;
 
-    @Column(name = "descripcion_categoria ", nullable = false, length = 255)
+    @Column(name = "descripcion_categoria", nullable = false, length = 255)
     private String descripcionCategoria;
 
     @OneToMany(mappedBy = "categoria")

@@ -18,14 +18,14 @@ import lombok.NoArgsConstructor;
 public class Producto {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
     private Long idProducto;
 
     @Column(name = "nombre_producto", nullable = false, length = 150)
     private String nombreProducto;
     
-    @Column(name = "precio", nullable = false)  
+    @Column(name = "precio_producto", nullable = false)  //Este nombre name = "precio_producto" tiene que ser exactamente igual al de la creacion de la tabla en el archivo de Flyway
     private double precioProducto;
 
     @Column(name = "stock")

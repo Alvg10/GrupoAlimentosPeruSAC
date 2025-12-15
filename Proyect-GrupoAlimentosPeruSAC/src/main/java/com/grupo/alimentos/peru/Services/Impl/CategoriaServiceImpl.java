@@ -54,8 +54,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public CategoriaResponseDTO actualizarCategoria(Long idCategoriaActualiza, CategoriaRequestDTO categoriaDTO) {
-        
+    public CategoriaResponseDTO actualizarCategoria(Long idCategoriaActualiza, CategoriaRequestDTO categoriaDTO) {        
         Categoria categoriaExsitente = categoriaRepository.findById(idCategoriaActualiza)
             .orElseThrow(() ->  new ResourceNotFoundException("No se encontro la categoria lamentablemente"));        
         categoriaExsitente.setNombreCategoria(categoriaDTO.getNombreCategoria());

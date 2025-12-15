@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @Validated
-@RequestMapping("/api/categoria")
+@RequestMapping("/api/categorias")
 public class CategoriaController {
 
     private final CategoriaService categoriaService;
@@ -33,7 +34,7 @@ public class CategoriaController {
     @PostMapping("/crearCategoria")
     public ResponseEntity<CategoriaResponseDTO> crearProducto (@Valid @RequestBody CategoriaRequestDTO crearPro){
         CategoriaResponseDTO nuevo = categoriaService.crearCategoria(crearPro);
-        return ResponseEntity.created(URI.create("/api/categoria/" + nuevo.getIdCategoria())).body(nuevo);
+        return ResponseEntity.created(URI.create("/api/categorias/" + nuevo.getIdCategoria())).body(nuevo);
 
     }
 
@@ -47,22 +48,23 @@ public class CategoriaController {
         return ResponseEntity.ok(categoriaService.obtenerCategoriaPorID(id));
     }
 
-    @GetMapping("/{nombreCategoria}")
+    @GetMapping("/buscarPorNombre")
     public ResponseEntity<CategoriaResponseDTO> obtenerPorName( @RequestParam String nombreCateg) {
         return ResponseEntity.ok(categoriaService.obtenerCategoriaPorNombre(nombreCateg));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoriaResponseDTO> actualizarCateg(
-            @PathVariable Long cateId,
+            @PathVariable Long id,
             @Valid @RequestBody CategoriaRequestDTO cateDto) {
 
-        return ResponseEntity.ok(categoriaService.actualizarCategoria(cateId, cateDto));
+        return ResponseEntity.ok(categoriaService.actualizarCategoria(id, cateDto));
     }
 
 
-    public ResponseEntity<Void> eliminarCategoria (@PathVariable Long idProd){
-        categoriaService.eliminarCategoria(idProd);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarCategoria (@PathVariable Long id){
+        categoriaService.eliminarCategoria(id);
         return ResponseEntity.noContent().build();
     }
 
