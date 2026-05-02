@@ -1,9 +1,9 @@
-package com.grupo.alimentos.peru.Services;
+package com.grupo.alimentos.peru.services;
 
 import java.util.List;
 
-import com.grupo.alimentos.peru.DTOs.ProductoRequestDTO;
-import com.grupo.alimentos.peru.DTOs.ProductoResponseDTO;
+import com.grupo.alimentos.peru.dto.ProductoRequestDTO;
+import com.grupo.alimentos.peru.dto.ProductoResponseDTO;
 
 public interface ProductoService {
  ProductoResponseDTO crearProducto (ProductoRequestDTO producto);

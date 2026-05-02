@@ -1,7 +1,8 @@
-package com.grupo.alimentos.peru.Services;
+package com.grupo.alimentos.peru.services;
 import java.util.List;
-import com.grupo.alimentos.peru.DTOs.TiendaRequestDTO;
-import com.grupo.alimentos.peru.DTOs.TiendaResponseDTO;
+
+import com.grupo.alimentos.peru.dto.TiendaRequestDTO;
+import com.grupo.alimentos.peru.dto.TiendaResponseDTO;
 
 public interface TiendaService {
     

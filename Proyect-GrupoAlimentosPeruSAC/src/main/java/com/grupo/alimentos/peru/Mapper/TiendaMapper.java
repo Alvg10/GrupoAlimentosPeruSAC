@@ -1,11 +1,11 @@
-package com.grupo.alimentos.peru.Mapper;
+package com.grupo.alimentos.peru.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import com.grupo.alimentos.peru.DTOs.TiendaRequestDTO;
-import com.grupo.alimentos.peru.DTOs.TiendaResponseDTO;
-import com.grupo.alimentos.peru.Entities.Tienda;
+import com.grupo.alimentos.peru.dto.TiendaRequestDTO;
+import com.grupo.alimentos.peru.dto.TiendaResponseDTO;
+import com.grupo.alimentos.peru.entity.Tienda;
 
 
 @Component

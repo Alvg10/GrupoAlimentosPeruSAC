@@ -1,17 +1,19 @@
-package com.grupo.alimentos.peru.Services.Impl;
+package com.grupo.alimentos.peru.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.grupo.alimentos.peru.DTOs.TiendaRequestDTO;
-import com.grupo.alimentos.peru.DTOs.TiendaResponseDTO;
-import com.grupo.alimentos.peru.Entities.Tienda;
-import com.grupo.alimentos.peru.Exceptions.AlreadyExistsException;
-import com.grupo.alimentos.peru.Exceptions.ResourceNotFoundException;
-import com.grupo.alimentos.peru.Mapper.TiendaMapper;
-import com.grupo.alimentos.peru.Repositories.TiendaRepository;
-import com.grupo.alimentos.peru.Services.TiendaService;
+import com.grupo.alimentos.peru.dto.TiendaRequestDTO;
+import com.grupo.alimentos.peru.dto.TiendaResponseDTO;
+import com.grupo.alimentos.peru.entity.Tienda;
+import com.grupo.alimentos.peru.exception.AlreadyExistsException;
+import com.grupo.alimentos.peru.exception.ResourceNotFoundException;
+import com.grupo.alimentos.peru.mapper.TiendaMapper;
+import com.grupo.alimentos.peru.repository.TiendaRepository;
+import com.grupo.alimentos.peru.services.TiendaService;
+import com.grupo.alimentos.peru.util.Messages;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class TiendaServiceImpl implements TiendaService {
     @Override
     public TiendaResponseDTO crearTienda(TiendaRequestDTO tiendaRequestDTO) {
         if(tiendaRepository.existsByNombreTiendaIgnoreCase(tiendaRequestDTO.getNombreTienda())){
-             throw new AlreadyExistsException ("Parece que la tienda ya existe ;)");}   
+             throw new AlreadyExistsException (Messages.STORE_ALREADY_EXISTS);}   
         return tiendaMapper.toDTO(tiendaRepository.save(tiendaMapper.toEntity(tiendaRequestDTO)));  
     }
     @Override
@@ -37,19 +39,19 @@ public class TiendaServiceImpl implements TiendaService {
     @Override
     public TiendaResponseDTO obtenerTiendaPorID(Long idTienda) {
         Tienda tiendaID = tiendaRepository.findById(idTienda)   
-            .orElseThrow(() -> new ResourceNotFoundException("Tienda no existe"));
+            .orElseThrow(() -> new ResourceNotFoundException(Messages.STORE_NOT_FOUND_ID));
         return tiendaMapper.toDTO(tiendaID);      
     }
     @Override
     public TiendaResponseDTO obtenerTiendaPorNombre(String nombreTienda) {
      Tienda tiendaID = tiendaRepository.findByNombreTiendaIgnoreCase(nombreTienda)   
-            .orElseThrow(() -> new ResourceNotFoundException("Tienda no existe"));
+            .orElseThrow(() -> new ResourceNotFoundException(Messages.STORE_NOT_FOUND_ID));
         return tiendaMapper.toDTO(tiendaID);    
     }
     @Override
     public TiendaResponseDTO actualizarTienda(Long idActualizarTienda, TiendaRequestDTO tiendaDTO) {
         Tienda tiendaID = tiendaRepository.findById(idActualizarTienda)   
-            .orElseThrow(() -> new ResourceNotFoundException("Tienda no existe para actualizar"));
+            .orElseThrow(() -> new ResourceNotFoundException(Messages.STORE_NOT_FOUND_UPDATE));
         tiendaID.setDireccionTienda(tiendaDTO.getDireccionTienda());
         tiendaID.setNombreTienda(tiendaDTO.getNombreTienda());
         tiendaID.setDistritoTienda(tiendaDTO.getDistritoTienda());
@@ -59,7 +61,7 @@ public class TiendaServiceImpl implements TiendaService {
     @Override
     public void eliminarTienda(Long idTienda) {
         Tienda tiendaDelete  = tiendaRepository.findById(idTienda)
-        .orElseThrow(() -> new ResourceNotFoundException("Tienda no encontrada"));
+        .orElseThrow(() -> new ResourceNotFoundException(Messages.STORE_NOT_FOUND));
         tiendaRepository.delete(tiendaDelete);
        }
    

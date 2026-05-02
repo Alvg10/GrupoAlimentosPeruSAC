@@ -1,7 +1,8 @@
-package com.grupo.alimentos.peru.Services;
+package com.grupo.alimentos.peru.services;
 import java.util.List;
-import com.grupo.alimentos.peru.DTOs.CategoriaRequestDTO;
-import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
+
+import com.grupo.alimentos.peru.dto.CategoriaRequestDTO;
+import com.grupo.alimentos.peru.dto.CategoriaResponseDTO;
 public interface CategoriaService {
     
 

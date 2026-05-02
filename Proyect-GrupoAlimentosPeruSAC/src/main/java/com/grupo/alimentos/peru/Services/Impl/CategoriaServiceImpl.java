@@ -1,18 +1,18 @@
-package com.grupo.alimentos.peru.Services.Impl;
+package com.grupo.alimentos.peru.services.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
-import com.grupo.alimentos.peru.DTOs.CategoriaRequestDTO;
-import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
-import com.grupo.alimentos.peru.Entities.Categoria;
-import com.grupo.alimentos.peru.Exceptions.AlreadyExistsException;
-import com.grupo.alimentos.peru.Exceptions.ResourceNotFoundException;
-import com.grupo.alimentos.peru.Mapper.CategoriaMapper;
-import com.grupo.alimentos.peru.Repositories.CategoriaRepository;
-import com.grupo.alimentos.peru.Services.CategoriaService;
+import com.grupo.alimentos.peru.dto.CategoriaRequestDTO;
+import com.grupo.alimentos.peru.dto.CategoriaResponseDTO;
+import com.grupo.alimentos.peru.entity.Categoria;
+import com.grupo.alimentos.peru.exception.AlreadyExistsException;
+import com.grupo.alimentos.peru.exception.ResourceNotFoundException;
+import com.grupo.alimentos.peru.mapper.CategoriaMapper;
+import com.grupo.alimentos.peru.repository.CategoriaRepository;
+import com.grupo.alimentos.peru.services.CategoriaService;
+import com.grupo.alimentos.peru.util.Messages;
 import lombok.RequiredArgsConstructor;
 
 
@@ -26,7 +26,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public CategoriaResponseDTO crearCategoria(CategoriaRequestDTO categoriaRequestDto)  {        
         if(categoriaRepository.existsByNombreCategoriaIgnoreCase(categoriaRequestDto.getNombreCategoria())){
-             throw new AlreadyExistsException ("Parece que la categoria ya existe ;)");}   
+             throw new AlreadyExistsException (Messages.CATEGORY_ALREADY_EXISTS);}   
             
         /* Categoria nuevaCategoria = categoriaMapper.toEntity(categoriaRequestDto);     
         Categoria categoria = categoriaRepository.save(nuevaCategoria);
@@ -49,31 +49,34 @@ public class CategoriaServiceImpl implements CategoriaService {
         }   */     
 
             Categoria categoria = categoriaRepository.findById(idcateg)
-            .orElseThrow(() -> new ResourceNotFoundException("Categoria No Existeee"));
+            .orElseThrow(() -> new ResourceNotFoundException(Messages.CATEGORY_NOT_FOUND_ID));
             return categoriaMapper.toDTO(categoria);
     }
 
     @Override
     public CategoriaResponseDTO actualizarCategoria(Long idCategoriaActualiza, CategoriaRequestDTO categoriaDTO) {        
         Categoria categoriaExsitente = categoriaRepository.findById(idCategoriaActualiza)
-            .orElseThrow(() ->  new ResourceNotFoundException("No se encontro la categoria lamentablemente"));        
+            .orElseThrow(() ->  new ResourceNotFoundException(Messages.CATEGORY_NOT_FOUND_UPDATE));        
         categoriaExsitente.setNombreCategoria(categoriaDTO.getNombreCategoria());
         categoriaExsitente.setDescripcionCategoria(categoriaDTO.getDescripcionCategoria());
         Categoria nombreCategoria = categoriaRepository.save(categoriaExsitente);
         return categoriaMapper.toDTO(nombreCategoria);
     }   
+
+
+
     @Override
     public void eliminarCategoria(Long idCategoria) {
-       Optional<Categoria> categoria = categoriaRepository.findById(idCategoria);
-       if(!categoria.isPresent()){
-        throw new ResourceNotFoundException("Categoria no encontrada");  
-       }
-       categoriaRepository.deleteById(idCategoria);
+       Categoria categoria = categoriaRepository.findById(idCategoria)
+        .orElseThrow(() -> new ResourceNotFoundException(Messages.CATEGORY_NOT_FOUND)); 
+       categoriaRepository.delete(categoria);
     }
+
+    
     @Override
     public CategoriaResponseDTO obtenerCategoriaPorNombre(String nombreCategoria) {
         Categoria nombreExsitente = categoriaRepository.findByNombreCategoriaIgnoreCase(nombreCategoria)
-            .orElseThrow(() ->  new ResourceNotFoundException("No se encontro el nombre lamentablemente"));
+            .orElseThrow(() ->  new ResourceNotFoundException(Messages.CATEGORY_NOT_FOUND_ID));
             return categoriaMapper.toDTO(nombreExsitente);
 
     }    

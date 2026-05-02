@@ -1,13 +1,14 @@
-package com.grupo.alimentos.peru.Mapper;
-
-import org.modelmapper.ModelMapper;
+package com.grupo.alimentos.peru.mapper;
 import org.springframework.stereotype.Component;
-
-import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
-import com.grupo.alimentos.peru.DTOs.ProductoRequestDTO;
-import com.grupo.alimentos.peru.DTOs.ProductoResponseDTO;
-import com.grupo.alimentos.peru.DTOs.TiendaResponseDTO;
-import com.grupo.alimentos.peru.Entities.Producto;
+import com.grupo.alimentos.peru.dto.CategoriaResponseDTO;
+import com.grupo.alimentos.peru.dto.ProductoRequestDTO;
+import com.grupo.alimentos.peru.dto.ProductoResponseDTO;
+import com.grupo.alimentos.peru.dto.TiendaResponseDTO;
+import com.grupo.alimentos.peru.entity.Categoria;
+import com.grupo.alimentos.peru.entity.Producto;
+import com.grupo.alimentos.peru.entity.Tienda;
+import com.grupo.alimentos.peru.exception.BusinessRuleException;
+import com.grupo.alimentos.peru.util.Messages;
 
 @Component
 public class ProductoMapper {  
@@ -45,22 +46,46 @@ public class ProductoMapper {
     dto.setPrecioProducto(producto.getPrecioProducto());
     dto.setStock(producto.getStock());
 
-    dto.setCategoria(
+    
+
+    if(producto.getCategoria() == null){
+        throw new BusinessRuleException(Messages.PRODUCT_NOT_CATEGORY_ASSIGNED + producto.getIdProducto() );
+    }
+    Categoria catgr = producto.getCategoria();
+        dto.setCategoria(new CategoriaResponseDTO(
+            catgr.getIdCategoria(),
+            catgr.getNombreCategoria(),
+            catgr.getDescripcionCategoria()
+        ));
+
+    if (producto.getTienda() == null) {
+        throw new BusinessRuleException(Messages.PRODUCT_NOT_STORE_ASSIGNED + producto.getIdProducto());
+    }
+        Tienda tienda = producto.getTienda();
+        dto.setTienda(new TiendaResponseDTO(
+            tienda.getIdTienda(),
+            tienda.getNombreTienda(),
+            tienda.getDireccionTienda(),
+            tienda.getDistritoTienda()
+        ));
+
+        /* dto.setCategoria(
         new CategoriaResponseDTO(
             producto.getCategoria().getIdCategoria(),
             producto.getCategoria().getNombreCategoria(),
             producto.getCategoria().getDescripcionCategoria()
         )
-    );
+        );*/
 
-    dto.setTienda(
+
+        /* dto.setTienda(
         new TiendaResponseDTO(
             producto.getTienda().getIdTienda(),
             producto.getTienda().getNombreTienda(),
             producto.getTienda().getDireccionTienda(),
             producto.getTienda().getDistritoTienda()
         )
-    );
+        );*/
 
     return dto;
     }

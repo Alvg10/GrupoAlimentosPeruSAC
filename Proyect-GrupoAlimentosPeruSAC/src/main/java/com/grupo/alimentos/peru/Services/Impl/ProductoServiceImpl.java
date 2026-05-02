@@ -1,21 +1,24 @@
-package com.grupo.alimentos.peru.Services.Impl;
+package com.grupo.alimentos.peru.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.grupo.alimentos.peru.DTOs.ProductoRequestDTO;
-import com.grupo.alimentos.peru.DTOs.ProductoResponseDTO;
-import com.grupo.alimentos.peru.Entities.Categoria;
-import com.grupo.alimentos.peru.Entities.Producto;
-import com.grupo.alimentos.peru.Entities.Tienda;
-import com.grupo.alimentos.peru.Exceptions.BusinessRuleException;
-import com.grupo.alimentos.peru.Exceptions.ResourceNotFoundException;
-import com.grupo.alimentos.peru.Mapper.ProductoMapper;
-import com.grupo.alimentos.peru.Repositories.CategoriaRepository;
-import com.grupo.alimentos.peru.Repositories.ProductoRepository;
-import com.grupo.alimentos.peru.Repositories.TiendaRepository;
-import com.grupo.alimentos.peru.Services.ProductoService;
+
+import com.grupo.alimentos.peru.dto.ProductoRequestDTO;
+import com.grupo.alimentos.peru.dto.ProductoResponseDTO;
+import com.grupo.alimentos.peru.entity.Categoria;
+import com.grupo.alimentos.peru.entity.Producto;
+import com.grupo.alimentos.peru.entity.Tienda;
+import com.grupo.alimentos.peru.exception.BusinessRuleException;
+import com.grupo.alimentos.peru.exception.ResourceNotFoundException;
+import com.grupo.alimentos.peru.mapper.ProductoMapper;
+import com.grupo.alimentos.peru.repository.CategoriaRepository;
+import com.grupo.alimentos.peru.repository.ProductoRepository;
+import com.grupo.alimentos.peru.repository.TiendaRepository;
+import com.grupo.alimentos.peru.services.ProductoService;
+import com.grupo.alimentos.peru.util.Messages;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,12 +35,12 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoResponseDTO crearProducto(ProductoRequestDTO nuevoProducto) {
         Tienda tienda = tiendaRepository.findById(nuevoProducto.getIdTienda())
-        .orElseThrow(() -> new ResourceNotFoundException("La tienda no existe"));    
+        .orElseThrow(() -> new ResourceNotFoundException(Messages.STORE_NOT_FOUND_ID));    
         Categoria categoria = categoriaRepository.findById(nuevoProducto.getIdCategoria())
-        .orElseThrow(()-> new ResourceNotFoundException("No existe esta categoria"));
+        .orElseThrow(()-> new ResourceNotFoundException(Messages.PRODUCT_ALREADY_EXISTS));
         if(productoRepository.existsByNombreProductoIgnoreCaseAndTienda_IdTienda(nuevoProducto.getNombreProducto(),nuevoProducto.getIdTienda()))
         {
-            throw new BusinessRuleException("Ya existe este producto mano");
+            throw new BusinessRuleException(Messages.PRODUCT_ALREADY_EXISTS);
         }
         Producto producto = productoMapper.toEntity(nuevoProducto);
         producto.setStock(0);
@@ -50,7 +53,7 @@ public class ProductoServiceImpl implements ProductoService{
     @Transactional(readOnly = true)
     public ProductoResponseDTO obtenerProductosPorID(Long idProducto) {
         Producto productoID = productoRepository.findById(idProducto)   
-            .orElseThrow(() -> new ResourceNotFoundException("producto no existe"));
+            .orElseThrow(() -> new ResourceNotFoundException(Messages.PRODUCT_NOT_FOUND));
         return productoMapper.toDTO(productoID);     
     }
 
@@ -85,9 +88,9 @@ public class ProductoServiceImpl implements ProductoService{
     public void eliminarProducto(Long idProducto) {
         
         Producto productoStock = productoRepository.findById(idProducto)
-            .orElseThrow(()-> new ResourceNotFoundException("No existe el producto"));
+            .orElseThrow(()-> new ResourceNotFoundException(Messages.PRODUCT_NOT_FOUND));
         if(productoStock.getStock() > 0 ){
-            throw new BusinessRuleException("Existen " + productoStock.getStock() + " productos en stock: No se puede eliminar");
+            throw new BusinessRuleException(Messages.PRODUCT_STOCK_EXISTS + productoStock.getStock());
         }
         productoRepository.delete(productoStock);
 
@@ -105,17 +108,17 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoResponseDTO actualizarProducto(Long idProducto, ProductoRequestDTO actualizarProducto) {
         Producto producto = productoRepository.findById(idProducto)
-        .orElseThrow(()->new ResourceNotFoundException("No existe el producto"));
+        .orElseThrow(()->new ResourceNotFoundException(Messages.PRODUCT_NOT_FOUND));
         Tienda tienda = tiendaRepository.findById(actualizarProducto.getIdTienda())
-        .orElseThrow(()->new ResourceNotFoundException("No existe la Tienda"));
+        .orElseThrow(()->new ResourceNotFoundException(Messages.STORE_NOT_FOUND_UPDATE));
         Categoria categoria = categoriaRepository.findById(actualizarProducto.getIdCategoria())
-        .orElseThrow(()->new ResourceNotFoundException("No existe la categoria"));
+        .orElseThrow(()->new ResourceNotFoundException(Messages.CATEGORY_NOT_FOUND_UPDATE));
         boolean duplicado = productoRepository.existsByNombreProductoIgnoreCaseAndTienda_IdTienda
         (actualizarProducto.getNombreProducto(), actualizarProducto.getIdTienda());
 
         // parte complicada
         if( duplicado && !producto.getNombreProducto().equalsIgnoreCase(actualizarProducto.getNombreProducto())){
-            throw new BusinessRuleException("ya existe un producto con ese nombre en esta tienda");
+            throw new BusinessRuleException(Messages.PRODUCT_DUPLICATE_UPDATE);
         }
         // No se usa productoMapper.toEntity ya que este espera un objeto y no un string
         producto.setNombreProducto(actualizarProducto.getNombreProducto());
@@ -129,10 +132,10 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoResponseDTO registrarEntrada(Long idProducto, int cantidad) {
         if(cantidad <= 0){
-            throw new BusinessRuleException("cantidad invalida");
+            throw new BusinessRuleException(Messages.INVALID_QUANTITY_INPUT);
         }
            Producto producto = productoRepository.findById(idProducto)
-           .orElseThrow(() -> new ResourceNotFoundException("producto no encontrado"));
+           .orElseThrow(() -> new ResourceNotFoundException(Messages.PRODUCT_NOT_FOUND_IMPUT));
         producto.setStock(producto.getStock() + cantidad);
         return productoMapper.toDTO(productoRepository.save (producto));
     }
@@ -140,10 +143,10 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoResponseDTO registrarSalida(Long idProducto, int cantidad) {
         if (cantidad <= 0 ){
-            throw new BusinessRuleException("cantidad no permitida");
+            throw new BusinessRuleException(Messages.INVALID_QUANTITY_OUTPUT);
         }
         Producto producto = productoRepository.findById(idProducto)
-        .orElseThrow(()-> new ResourceNotFoundException("No se encuentra el producto"));
+        .orElseThrow(()-> new ResourceNotFoundException(Messages.PRODUCT_NOT_FOUND_OUTPUT));
         if (producto.getStock() - cantidad < 0){
             throw new BusinessRuleException("no hay stock suficiente");
        }
@@ -157,9 +160,9 @@ public class ProductoServiceImpl implements ProductoService{
         for (ProductoRequestDTO productos : productosVarios){
             Producto productoSnuevos = productoMapper.toEntity(productos);
             Categoria categoria = categoriaRepository.findById(productos.getIdCategoria())
-                .orElseThrow(()-> new ResourceNotFoundException("No existe esa categoria para ese producto"));  
+                .orElseThrow(()-> new ResourceNotFoundException(Messages.CATEGORY_NOT_FOUND_ID));  
             Tienda tienda = tiendaRepository.findById(productos.getIdTienda())
-                .orElseThrow(()-> new ResourceNotFoundException("No existe esa tienda para ese producto"));
+                .orElseThrow(()-> new ResourceNotFoundException(Messages.STORE_NOT_FOUND_ID));
             productoSnuevos.setCategoria(categoria);
             productoSnuevos.setTienda(tienda);
             muchosProducts.add(productoSnuevos);

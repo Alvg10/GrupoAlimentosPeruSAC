@@ -1,11 +1,11 @@
-package com.grupo.alimentos.peru.Mapper;
+package com.grupo.alimentos.peru.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import com.grupo.alimentos.peru.DTOs.CategoriaRequestDTO;
-import com.grupo.alimentos.peru.DTOs.CategoriaResponseDTO;
-import com.grupo.alimentos.peru.Entities.Categoria;
+import com.grupo.alimentos.peru.dto.CategoriaRequestDTO;
+import com.grupo.alimentos.peru.dto.CategoriaResponseDTO;
+import com.grupo.alimentos.peru.entity.Categoria;
 
 @Component
 public class CategoriaMapper {
@@ -15,24 +15,13 @@ public class CategoriaMapper {
         this.modelMapper = modelMapper; //Inyection por constructor
     }
 
-
-
-
     public CategoriaResponseDTO toDTO(Categoria categoria){
         return modelMapper.map(categoria, CategoriaResponseDTO.class);
     }
 
-
-
-
-
     public Categoria toEntity(CategoriaRequestDTO categoriaRequest){
         return modelMapper.map(categoriaRequest, Categoria.class);
     }
-
-
-
-
 
 
 }
